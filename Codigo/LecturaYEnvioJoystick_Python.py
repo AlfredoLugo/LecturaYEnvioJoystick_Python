@@ -10,21 +10,31 @@ arduinoJoystick.flush()
 arduinoJoystick.setDTR()
 
 constanteControl = 0
-valorFiltrado = 0
+valorFiltradoAceleracion = 0
+valorFiltradoDireccion = 0
+valorFiltradoSeleccion = 0
+# valorAceleracionEntero = 0
+# valorDireccionEntero = 0
+# valorSeleccionEntero = 0
 
 while True:
-	valorAceleracion = arduinoJoystick.readline() #Lectura del serial 
-	valorAceleracionEntero = int(valorAceleracion) #Converción a valor enetero
+	valorAceleracion = arduinoJoystick.readline() #Lectura del serial aceleracion
+	valorDireccion = arduinoJoystick.readline() #Lectura del serial direccion
+	# valorSeleccion = arduinoJoystick.readline() #Lectura del serial seleccion de estado
 	if constanteControl <= 19:
 		# Estabilización de los datos leidos
 		constanteControl = constanteControl + 1
-		valorFiltrado = valorFiltrado + valorAceleracionEntero
+		valorFiltradoAceleracion = valorFiltradoAceleracion + int(valorAceleracion)
+		valorFiltradoDireccion = valorFiltradoDireccion + int(valorDireccion)
+		# valorFiltradoSeleccion = valorFiltradoSeleccion + int(valorSeleccion)
 	else:
 		# Revisión de información Recivida
-		print(int(valorFiltrado / 20))
+		print('Aceleracion: ', valorFiltradoAceleracion / 20, '  Direccion: ', valorFiltradoDireccion / 20,)# '  Seleccion: ', valorSeleccion / 20)
 		# Reset variable utilizadas
 		constanteControl = 0
-		valorFiltrado = 0
+		valorFiltradoAceleracion = 0
+		valorFiltradoDireccion = 0
+		ValorFiltradoSeleccion = 0
 		# Limpiamos el buffer
 		arduinoJoystick.flush()
 		arduinoJoystick.setDTR()
